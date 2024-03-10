@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Image, Button } from "antd";
+import SideMenu from "./components/SideMenu";
+import AppRoutes from "./components/AppRoutes";
+import { Amplify } from "aws-amplify";
 
-function App() {
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
+import config from "./amplifyconfiguration.json";
+Amplify.configure(config);
+
+const { Sider, Content, Footer } = Layout;
+function App({ signOut }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Sider
+        style={{
+          height: "100vh",
+          backgroundColor: "white",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <Image
+            src="https://logos-world.net/wp-content/uploads/2020/11/Uber-Eats-Symbol.jpg"
+            preview={false}
+          />
+
+          <SideMenu />
+        </div>
+
+        <Button danger style={{ margin: 10 }} onClick={signOut}>
+          Sign Out
+        </Button>
+      </Sider>
+      <Layout>
+        <Content style={{}}>
+          <AppRoutes />
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          Yam Eats Restaurant Dashboard © 2024
+        </Footer>
+      </Layout>
+    </Layout>
   );
 }
 
-export default App;
+export default withAuthenticator(App);
